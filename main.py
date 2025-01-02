@@ -1,9 +1,7 @@
 import argparse
 import importlib
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
+from playwright.sync_api import sync_playwright
 
 def main():
     parser = argparse.ArgumentParser()
@@ -11,30 +9,32 @@ def main():
     
     args = parser.parse_args()
 
-    options = Options()
-    # options.add_argument('--headless')
-    # options.add_argument('--disable-gpu')  # Disable GPU acceleration for headless mode
 
-    driver = webdriver.Chrome(options=options)
+    with sync_playwright() as p:
+        # Channel can be "chrome", "msedge", "chrome-beta", "msedge-beta" or "msedge-dev".
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+        page.set_extra_http_headers({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"})
 
-    try:
         if args.vehicles == 'rosen':
             from vehicles.rosen import get_vins
-            vins = get_vins(driver)
+            vins = get_vins(page)
         else:
             print(f"Error: vehicles '{args.vehicles}' not supported")
             return
 
         from recalls.ford import recall_from_vin
 
-        print(vins)
         for vin in vins:
             print(vin)
-            recall = recall_from_vin(driver, vin)        
-            print(recall)
+            try:
+                recall = recall_from_vin(page, vin)        
+            except:
+                print('failed')
+                continue
+            if len(recall["campaigns"]) > 0:
+                print(recall)
 
-    finally:
-        driver.quit()
 
 
 if __name__ == "__main__":
