@@ -27,4 +27,7 @@ jobs:
         playwright install --with-deps
 
     - name: Run Script
+      env:
+        ZIPCODE: ${{ vars.ZIPCODE }}
+        VEHICLES_SITE1_URL: ${{ vars.VEHICLES_SITE1_URL }}
       run: python main.py

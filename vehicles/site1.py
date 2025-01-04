@@ -37,7 +37,7 @@ def get_vehicles(page, radius: int, zipcode: str) -> List[Dict]:
     
     page.set_viewport_size({"width": 1920, "height": 1080})
 
-    base_url = os.getenv("VEHICLES_SITE_1_URL")
+    base_url = os.getenv("VEHICLES_SITE1_URL")
     url = f"{base_url}?dealer_id=&keyword=&list_price_max=&list_price_min=&makes[]=ford&maximum_distance={radius}&mileage_max=&page_size=100&sort=listed_at_desc&stock_type=used&year_max=&year_min=&zip={zipcode}"
     
     page.goto(url, wait_until='domcontentloaded')
