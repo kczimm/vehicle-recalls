@@ -3,6 +3,10 @@ name: Manual Scrape
 on:
   workflow_dispatch:
 
+env:
+  ZIPCODE: ${{ vars.ZIPCODE }}
+  VEHICLES_SITE1_URL: ${{ vars.VEHICLES_SITE1_URL }}
+
 jobs:
   run-playwright:
     runs-on: ubuntu-latest
@@ -26,7 +30,4 @@ jobs:
         playwright install --with-deps
 
     - name: Run Script
-      env:
-        ZIPCODE: ${{ vars.ZIPCODE }}
-        VEHICLES_SITE1_URL: ${{ vars.VEHICLES_SITE1_URL }}
       run: python main.py
