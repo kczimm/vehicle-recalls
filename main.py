@@ -13,7 +13,6 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False,
             args=[
                 '--disable-blink-features=AutomationControlled',
                 '--no-sandbox',
