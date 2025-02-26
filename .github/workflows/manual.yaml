@@ -47,3 +47,9 @@ jobs:
         ZIPCODE: ${{ vars.ZIPCODE }}
         VEHICLES_SITE1_URL: ${{ vars.VEHICLES_SITE1_URL }}
       run: python main.py
+
+    - name: Upload JSON file as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: vehicles-site1-data
+        path: vehicles_site1.json
